@@ -4,7 +4,7 @@
 // always be fresh.
 // ============================================================================
 
-var CACHE_NAME = 'ledger-shell-v1';
+var CACHE_NAME = 'ledger-shell-v2';
 var SHELL_FILES = [
   './',
   './index.html',

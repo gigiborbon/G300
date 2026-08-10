@@ -86,10 +86,6 @@ var RecordForm = (function () {
       Toast.show('Choose a category', true);
       return false;
     }
-    if (!document.getElementById('particularsInput').value.trim()) {
-      Toast.show('Add a short description', true);
-      return false;
-    }
     return true;
   }
 
