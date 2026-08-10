@@ -6,7 +6,7 @@
    strictly for expense/income & variance signaling — never decorative.
    ============================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
   /* Color */
@@ -24,8 +24,8 @@
   --text-muted: #5B6D68;
 
   /* Typography */
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-ledger: 'Space Grotesk', 'Inter', monospace;
+  --font-display: 'Geist', 'Inter', -apple-system, sans-serif;
+  --font-ledger: 'Geist', 'Inter', monospace;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Layout */
