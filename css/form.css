@@ -1,0 +1,166 @@
+/* ---------- Wallet chips ---------- */
+
+.wallet-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.wallet-chip {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+}
+.wallet-chip.is-selected {
+  border-color: var(--jade);
+  background: var(--jade);
+  color: #fff;
+}
+
+/* ---------- Expense/Income toggle ---------- */
+
+.type-toggle {
+  display: flex;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 4px;
+}
+.type-toggle button {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 10px 0;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.type-toggle button.is-active[data-type="expense"] {
+  background: var(--coral);
+  color: #fff;
+}
+.type-toggle button.is-active[data-type="income"] {
+  background: var(--mint);
+  color: #fff;
+}
+
+/* ---------- Amount input ---------- */
+
+.amount-field {
+  text-align: center;
+  margin: 22px 0 26px;
+}
+.amount-field .currency {
+  font-family: var(--font-ledger);
+  font-size: 20px;
+  color: var(--text-muted);
+  vertical-align: top;
+  margin-right: 4px;
+}
+.amount-field input {
+  font-family: var(--font-ledger);
+  font-weight: 700;
+  font-size: 48px;
+  font-variant-numeric: tabular-nums;
+  border: none;
+  background: none;
+  color: var(--text);
+  width: 60%;
+  text-align: center;
+  outline: none;
+}
+.amount-field input::placeholder { color: var(--line); }
+
+/* ---------- Fields ---------- */
+
+.field-group { margin-bottom: 14px; }
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.field-control {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--text);
+  font-size: 16px;
+  font-family: var(--font-body);
+}
+.field-control:focus { border-color: var(--jade); }
+
+select.field-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235B6D68' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+.date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--line);
+  margin-bottom: 18px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.date-row strong { color: var(--text); font-weight: 500; }
+.date-row button {
+  background: none;
+  border: none;
+  color: var(--jade);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+[data-theme="dark"] .date-row button { color: var(--jade-light); }
+.date-row input[type="date"] {
+  border: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.notes-toggle {
+  background: none;
+  border: none;
+  color: var(--jade);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 0 18px;
+}
+[data-theme="dark"] .notes-toggle { color: var(--jade-light); }
+.notes-field { display: none; margin-bottom: 14px; }
+.notes-field.is-open { display: block; }
+
+.field-error {
+  font-size: 12px;
+  color: var(--coral);
+  min-height: 16px;
+  margin: -8px 0 10px;
+}

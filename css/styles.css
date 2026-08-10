@@ -1,0 +1,269 @@
+/* ============================================================================
+   DESIGN TOKENS
+   Palette: "Ledger" — a wallet app should feel like a well-kept physical
+   ledger, not a spreadsheet. Deep jade for trust/structure, marigold for
+   the single call-to-action color (cash, warmth), coral/mint reserved
+   strictly for expense/income & variance signaling — never decorative.
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  /* Color */
+  --ink: #0B2B26;
+  --jade: #146356;
+  --jade-light: #1F8A76;
+  --marigold: #E8A33D;
+  --marigold-deep: #C97F1E;
+  --coral: #D9564A;
+  --mint: #3FA187;
+  --paper: #F6F4EE;
+  --paper-raised: #FFFFFF;
+  --line: rgba(11, 43, 38, 0.12);
+  --text: #142320;
+  --text-muted: #5B6D68;
+
+  /* Typography */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-ledger: 'Space Grotesk', 'Inter', monospace;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Layout */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 2px rgba(11,43,38,0.06), 0 8px 24px rgba(11,43,38,0.08);
+  --shadow-pop: 0 4px 14px rgba(232,163,61,0.35);
+  --nav-height: 72px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+[data-theme="dark"] {
+  --ink: #F6F4EE;
+  --jade: #2AA98E;
+  --jade-light: #4FCBAE;
+  --paper: #0C1917;
+  --paper-raised: #12211E;
+  --line: rgba(246, 244, 238, 0.10);
+  --text: #EFF3F1;
+  --text-muted: #9AAFA9;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overscroll-behavior-y: contain;
+}
+
+h1, h2, h3 { font-family: var(--font-display); margin: 0; }
+
+button { font-family: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--jade-light);
+  outline-offset: 2px;
+}
+
+/* ---------- App shell ---------- */
+
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.view {
+  display: none;
+  flex: 1;
+  padding: 20px 20px calc(var(--nav-height) + 24px + var(--safe-bottom));
+  animation: fade-in 180ms ease;
+}
+.view.is-active { display: block; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .view { animation: none; }
+}
+
+.view-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.view-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.sync-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-ledger);
+}
+
+/* ---------- Bottom nav ---------- */
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+  max-width: 480px;
+  height: calc(var(--nav-height) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  display: flex;
+  background: var(--paper-raised);
+  border-top: 1px solid var(--line);
+  z-index: 40;
+}
+
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 0 4px;
+}
+.nav-btn svg { width: 24px; height: 24px; }
+.nav-btn.is-active { color: var(--jade); }
+[data-theme="dark"] .nav-btn.is-active { color: var(--jade-light); }
+
+/* ---------- Cards ---------- */
+
+.card {
+  background: var(--paper-raised);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 18px;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--marigold);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: var(--shadow-pop);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled {
+  opacity: 0.55;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--jade);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px;
+}
+[data-theme="dark"] .btn-text { color: var(--jade-light); }
+
+/* ---------- Auth gate ---------- */
+
+.auth-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+  gap: 20px;
+}
+.auth-gate.is-hidden { display: none; }
+.auth-gate .mark {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+}
+.auth-gate p {
+  color: rgba(246,244,238,0.7);
+  font-size: 14px;
+  max-width: 280px;
+  line-height: 1.5;
+}
+.auth-gate .error {
+  color: var(--coral);
+  font-size: 13px;
+  min-height: 18px;
+}
+#googleSignInBtn { min-height: 44px; }
+
+/* ---------- Toast ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--nav-height) + var(--safe-bottom) + 16px);
+  transform: translate(-50%, 12px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 220ms ease;
+  z-index: 60;
+  white-space: nowrap;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.toast.is-error { background: var(--coral); }
+
+/* ---------- Utility ---------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+}

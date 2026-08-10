@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#146356">
+<title>Ledger — Wallet Tracker</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ledger">
+
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/form.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- AUTH GATE -->
+<!-- ============================================================ -->
+<div class="auth-gate" id="authGate">
+  <div class="mark">Ledger</div>
+  <p>Sign in with the Google account you use for your budget sheet. Access is limited to authorized accounts only.</p>
+  <div id="googleSignInBtn"></div>
+  <div class="error" id="authError"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- APP SHELL -->
+<!-- ============================================================ -->
+<div class="app-shell">
+
+  <!-- ---------------- Add Record (default view) ---------------- -->
+  <main class="view is-active" id="view-add" aria-labelledby="add-heading">
+    <div class="view-header">
+      <h1 id="add-heading">Add record</h1>
+      <span class="sync-note" id="addSyncNote"></span>
+    </div>
+
+    <form id="recordForm" novalidate>
+      <div class="wallet-chips" id="walletChips" role="group" aria-label="Wallet"></div>
+
+      <div class="type-toggle" role="group" aria-label="Transaction type">
+        <button type="button" data-type="expense" class="is-active" aria-pressed="true">Expense</button>
+        <button type="button" data-type="income" aria-pressed="false">Income</button>
+      </div>
+
+      <div class="amount-field">
+        <span class="currency">₱</span><input
+          type="number"
+          inputmode="decimal"
+          id="amountInput"
+          placeholder="0.00"
+          min="0"
+          step="0.01"
+          required
+          aria-label="Amount">
+      </div>
+      <div class="field-error" id="amountError"></div>
+
+      <div class="field-group">
+        <label class="field-label" for="categorySelect">Category</label>
+        <select class="field-control" id="categorySelect" required>
+          <option value="" disabled selected>Choose a category</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="particularsInput">Particulars</label>
+        <input class="field-control" type="text" id="particularsInput" placeholder="What was this for?" required>
+      </div>
+
+      <button type="button" class="notes-toggle" id="notesToggle">+ Add note</button>
+      <div class="field-group notes-field" id="notesField">
+        <label class="field-label" for="notesInput">Notes</label>
+        <input class="field-control" type="text" id="notesInput" placeholder="Optional">
+      </div>
+
+      <div class="date-row">
+        <span>Date: <strong id="dateDisplay">Today</strong></span>
+        <input type="date" id="dateInput" class="visually-hidden">
+        <button type="button" id="dateEditBtn">Change</button>
+      </div>
+
+      <button type="submit" class="btn-primary" id="submitBtn">Save entry</button>
+    </form>
+  </main>
+
+  <!-- ---------------- Dashboard ---------------- -->
+  <section class="view" id="view-dashboard" aria-labelledby="dash-heading">
+    <div class="view-header">
+      <h1 id="dash-heading">Dashboard</h1>
+      <span class="sync-note" id="dashSyncNote">—</span>
+    </div>
+    <div class="refresh-row">
+      <button class="btn-text" id="refreshBtn">↻ Refresh</button>
+    </div>
+    <div id="dashboardContent">
+      <div class="dashboard-skeleton">Loading balances…</div>
+    </div>
+  </section>
+
+  <!-- ---------------- Settings ---------------- -->
+  <section class="view" id="view-settings" aria-labelledby="settings-heading">
+    <div class="view-header">
+      <h1 id="settings-heading">Settings</h1>
+    </div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="field-label" style="margin-bottom:4px;">Signed in as</div>
+      <div id="settingsEmail" style="font-size:15px;">—</div>
+    </div>
+    <div class="card" style="margin-bottom:14px; display:flex; align-items:center; justify-content:space-between;">
+      <span>Dark mode</span>
+      <input type="checkbox" id="darkModeToggle">
+    </div>
+    <button class="btn-primary" id="signOutBtn" style="background:var(--coral); color:#fff; box-shadow:none;">Sign out</button>
+  </section>
+
+  <!-- ---------------- Bottom nav ---------------- -->
+  <nav class="bottom-nav" aria-label="Primary">
+    <button class="nav-btn is-active" data-view="add" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Add
+    </button>
+    <button class="nav-btn" data-view="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-btn" data-view="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg>
+      Settings
+    </button>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/form.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
