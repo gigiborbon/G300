@@ -21,8 +21,8 @@ function jsonOut(obj) {
 /**
  * GET endpoints — read-only.
  *   ?action=ping                      -> health check, no auth
- *   ?action=dashboard&idToken=...     -> wallet balances + OVER
- *   ?action=categories&idToken=...    -> category dropdown list
+ *   ?action=dashboard&sessionToken=...  -> wallet balances + OVER
+ *   ?action=categories&sessionToken=... -> category dropdown list
  */
 function doGet(e) {
   var action = e.parameter.action;
@@ -31,7 +31,7 @@ function doGet(e) {
     return jsonOut({ ok: true, message: 'Wallet API is live.' });
   }
 
-  var auth = verifyIdToken(e.parameter.idToken);
+  var auth = verifyPersistentSession(e.parameter.sessionToken);
   if (!auth.ok) {
     return jsonOut({ ok: false, error: auth.error });
   }
@@ -61,7 +61,7 @@ function doGet(e) {
  * POST endpoint — add a new record.
  * Body (JSON, sent as text/plain to avoid CORS preflight):
  * {
- *   idToken, wallet, isIncome, amount, category, particulars, notes, date
+ *   action, sessionToken, wallet, isIncome, amount, category, particulars, notes, date
  * }
  */
 function doPost(e) {
@@ -72,7 +72,31 @@ function doPost(e) {
     return jsonOut({ ok: false, error: 'Malformed request body.' });
   }
 
-  var auth = verifyIdToken(body.idToken);
+  if (body.action === 'login') {
+    var googleAuth = verifyIdToken(body.idToken);
+    if (!googleAuth.ok) return jsonOut(googleAuth);
+    return jsonOut({
+      ok: true,
+      email: googleAuth.email,
+      sessionToken: createPersistentSession(googleAuth.email)
+    });
+  }
+
+  if (body.action === 'verifySession') {
+    var existing = verifyPersistentSession(body.sessionToken);
+    return jsonOut(existing);
+  }
+
+  if (body.action === 'signOut') {
+    revokePersistentSession(body.sessionToken);
+    return jsonOut({ ok: true });
+  }
+
+  if (body.action !== 'addRecord') {
+    return jsonOut({ ok: false, error: 'Unknown action.' });
+  }
+
+  var auth = verifyPersistentSession(body.sessionToken);
   if (!auth.ok) {
     return jsonOut({ ok: false, error: auth.error });
   }

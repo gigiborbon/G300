@@ -5,9 +5,9 @@
 // ============================================================================
 
 var Api = (function () {
-  function get(action, idToken) {
+  function get(action, sessionToken) {
     var url = APP_CONFIG.API_BASE_URL + '?action=' + encodeURIComponent(action);
-    if (idToken) url += '&idToken=' + encodeURIComponent(idToken);
+    if (sessionToken) url += '&sessionToken=' + encodeURIComponent(sessionToken);
 
     return fetch(url).then(function (r) { return r.json(); });
   }
@@ -22,10 +22,13 @@ var Api = (function () {
 
   return {
     ping: function () { return get('ping'); },
-    dashboard: function (idToken) { return get('dashboard', idToken); },
-    categories: function (idToken) { return get('categories', idToken); },
-    addRecord: function (idToken, record) {
-      var body = Object.assign({ idToken: idToken }, record);
+    login: function (idToken) { return post({ action: 'login', idToken: idToken }); },
+    verifySession: function (sessionToken) { return post({ action: 'verifySession', sessionToken: sessionToken }); },
+    signOut: function (sessionToken) { return post({ action: 'signOut', sessionToken: sessionToken }); },
+    dashboard: function (sessionToken) { return get('dashboard', sessionToken); },
+    categories: function (sessionToken) { return get('categories', sessionToken); },
+    addRecord: function (sessionToken, record) {
+      var body = Object.assign({ action: 'addRecord', sessionToken: sessionToken }, record);
       return post(body);
     }
   };

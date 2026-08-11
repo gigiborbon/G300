@@ -65,19 +65,13 @@ function onSignedIn() {
   initSettings();
 }
 
-function onSignedOut() {
-  document.getElementById('authGate').classList.remove('is-hidden');
-}
-
 window.addEventListener('ledger:signed-in', onSignedIn);
-window.addEventListener('ledger:signed-out', onSignedOut);
 
 document.addEventListener('DOMContentLoaded', function () {
   initNav();
   initTheme();
   RecordForm.init();
   Dashboard.init();
-  Auth.init();
 });
 
 if ('serviceWorker' in navigator) {

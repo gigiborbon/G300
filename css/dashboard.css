@@ -1,5 +1,5 @@
 .over-card {
-  background: linear-gradient(135deg, var(--ink), var(--jade));
+  background: #000000;
   color: var(--paper);
   border-radius: var(--radius-lg);
   padding: 22px;
@@ -24,10 +24,10 @@
 .status-dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  background: var(--mint);
+  background: #FFFFFF;
   flex-shrink: 0;
 }
-.status-dot.is-off { background: var(--coral); }
+.status-dot.is-off { background: #777777; }
 
 .wallet-stack { display: flex; flex-direction: column; gap: 10px; }
 

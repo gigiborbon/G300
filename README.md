@@ -1,4 +1,4 @@
-# Ledger — Mobile Wallet Companion App
+# G — Mobile Wallet Companion App
 
 A fast, installable mobile app for adding transactions and viewing wallet
 balances, backed entirely by your existing Google Sheet. The sheet stays the

@@ -128,8 +128,6 @@ var RecordForm = (function () {
   function init() {
     renderWalletChips();
     setToday();
-    loadCategories();
-
     document.querySelectorAll('.type-toggle button').forEach(function (btn) {
       btn.addEventListener('click', function () { selectType(btn.dataset.type); });
     });
@@ -157,5 +155,5 @@ var RecordForm = (function () {
     document.getElementById('recordForm').addEventListener('submit', submit);
   }
 
-  return { init: init };
+  return { init: init, loadCategories: loadCategories };
 })();

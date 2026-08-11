@@ -4,7 +4,7 @@
 // always be fresh.
 // ============================================================================
 
-var CACHE_NAME = 'ledger-shell-v2';
+var CACHE_NAME = 'g-shell-v4';
 var SHELL_FILES = [
   './',
   './index.html',
@@ -20,7 +20,8 @@ var SHELL_FILES = [
   './js/dashboard.js',
   './js/app.js',
   './assets/icons/icon-192.png',
-  './assets/icons/icon-512.png'
+  './assets/icons/icon-512.png',
+  './assets/gigi-logo.png'
 ];
 
 self.addEventListener('install', function (event) {
