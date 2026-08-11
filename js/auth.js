@@ -128,3 +128,5 @@ var Auth = (function () {
 
   return { init: init, getToken: sessionToken, getEmail: getEmail, signOut: signOut };
 })();
+
+document.addEventListener('DOMContentLoaded', Auth.init);
