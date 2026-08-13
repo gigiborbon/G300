@@ -63,6 +63,7 @@ function initSettings() {
 function onSignedIn() {
   document.getElementById('authGate').classList.add('is-hidden');
   initSettings();
+  Dashboard.load(false);
 }
 
 window.addEventListener('ledger:signed-in', onSignedIn);
