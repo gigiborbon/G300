@@ -4,7 +4,7 @@
 // always be fresh.
 // ============================================================================
 
-var CACHE_NAME = 'g-shell-v8';
+var CACHE_NAME = 'g-shell-v9';
 var SHELL_FILES = [
   './',
   './index.html',

@@ -24,8 +24,8 @@
   --jade: #000000;
   --jade-light: #666666;
   --mint: #333333;
-  --success: #16803C;
-  --error: #D00000;
+  --success: #000000;
+  --error: #333333;
   --theme-color: #000000;
   --radius-md: 10px;
   --radius-lg: 16px;
@@ -50,8 +50,6 @@
   --primary-dark: #E5E5E5;
   --accent: #FFFFFF;
   --accent-light: #D4D4D4;
-  --success: #4ADE80;
-  --error: #FF6B6B;
 }
 
 * {

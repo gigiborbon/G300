@@ -30,7 +30,7 @@ var Dashboard = (function () {
 
     var isOver = overShort >= 0;
     var label = isOver ? 'Over' : 'Short';
-    var color = isOver ? 'var(--success)' : 'var(--error)';
+    var color = 'var(--text-light)';
     var sign = isOver ? '+' : '\u2212';
     var amount = Math.abs(overShort);
     var breakdown = Array.isArray(data.breakdown) ? data.breakdown : [];
