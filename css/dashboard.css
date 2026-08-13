@@ -1,66 +1,87 @@
-.over-card {
-  background: #000000;
-  color: var(--paper);
-  border-radius: var(--radius-lg);
-  padding: 22px;
-  margin-bottom: 22px;
-  box-shadow: var(--shadow-card);
-}
-.over-card .label {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  opacity: 0.75;
-}
-.over-card .value {
-  font-family: var(--font-ledger);
-  font-size: 36px;
-  font-weight: 700;
-  margin-top: 6px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.status-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  flex-shrink: 0;
-}
-.status-dot.is-off { background: #777777; }
+/* Dashboard Styles */
 
-.wallet-stack { display: flex; flex-direction: column; gap: 10px; }
-
-.wallet-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 18px;
-  border-radius: var(--radius-md);
-  background: var(--paper-raised);
-  box-shadow: var(--shadow-card);
-  border-left: 4px solid var(--jade-light);
-}
-.wallet-card .name {
-  font-weight: 600;
-  font-size: 15px;
-}
-.wallet-card .balance {
-  font-family: var(--font-ledger);
-  font-weight: 700;
-  font-size: 18px;
-  font-variant-numeric: tabular-nums;
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.dashboard-empty, .dashboard-skeleton {
+.dashboard-card {
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   text-align: center;
-  color: var(--text-muted);
+}
+
+.dashboard-card.highlight {
+  grid-column: 1 / -1;
+  background: rgba(27, 160, 152, 0.02);
+}
+
+.card-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.card-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.dashboard-summary {
+  padding: 14px;
+  background: rgba(27, 160, 152, 0.05);
+  border-left: 3px solid var(--primary);
+  border-radius: 6px;
   font-size: 14px;
-  padding: 40px 0;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.dashboard-summary p {
+  margin: 0;
+}
+
+.error-card {
+  padding: 16px;
+  background: rgba(208, 0, 0, 0.05);
+  border: 1px solid rgba(208, 0, 0, 0.2);
+  border-radius: 8px;
+  color: var(--error);
+  text-align: center;
+  font-size: 14px;
+}
+
+.dashboard-skeleton {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 14px;
 }
 
 .refresh-row {
+  margin-bottom: 16px;
   display: flex;
   justify-content: flex-end;
-  margin: -8px 0 14px;
+}
+
+@media (max-width: 480px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-card.highlight {
+    grid-column: 1;
+  }
+
+  .card-value {
+    font-size: 20px;
+  }
 }
