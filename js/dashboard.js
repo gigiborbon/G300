@@ -1,67 +1,119 @@
-// ============================================================================
-// DASHBOARD — read-only balances + OVER tile.
-// ============================================================================
+const DASHBOARD = (() => {
+  const FORM_SHEET = "Form";
+  const CASH_CELL = "H11";
+  const TOTAL_CELL = "H19";
+  const OVER_SHORT_CELL = "H13";
 
-var Dashboard = (function () {
-  var stale = true;
-  var loading = false;
+  function initDashboard() {
+    const dashboardBtn = document.querySelector('[data-view="dashboard"]');
+    const refreshBtn = document.getElementById("refreshBtn");
 
-  function fmt(n) {
-    if (n === null || n === undefined || isNaN(n)) return '—';
-    return '₱' + Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (dashboardBtn) {
+      dashboardBtn.addEventListener("click", () => {
+        loadDashboard();
+      });
+    }
+
+    if (refreshBtn) {
+      refreshBtn.addEventListener("click", () => {
+        loadDashboard();
+      });
+    }
   }
 
-  function render(data) {
-    var content = document.getElementById('dashboardContent');
-    var over = data.over;
-    var balanced = over !== null && Math.abs(over) < 0.005;
+  function loadDashboard() {
+    const content = document.getElementById("dashboardContent");
+    if (content) content.innerHTML = "<div class='dashboard-skeleton'>Loading balances…</div>";
 
-    var html = '';
-    html += '<div class="over-card">';
-    html += '  <div class="label">Over / short</div>';
-    html += '  <div class="value"><span class="status-dot' + (balanced ? '' : ' is-off') + '"></span>' + fmt(over) + '</div>';
-    html += '</div>';
+    // Fetch all three values from Form sheet
+    Promise.all([
+      fetchCellValue(FORM_SHEET, CASH_CELL),
+      fetchCellValue(FORM_SHEET, TOTAL_CELL),
+      fetchCellValue(FORM_SHEET, OVER_SHORT_CELL),
+    ])
+      .then(([cashValue, totalValue, overShortValue]) => {
+        renderDashboard(
+          parseFloat(cashValue) || 0,
+          parseFloat(totalValue) || 0,
+          parseFloat(overShortValue) || 0
+        );
+        updateSyncNote("Just now");
+      })
+      .catch((err) => {
+        if (content) {
+          content.innerHTML = `<div class="error-card">Failed to load balances: ${err.message}</div>`;
+        }
+        updateSyncNote("Error");
+      });
+  }
 
-    html += '<div class="wallet-stack">';
-    data.wallets.forEach(function (w) {
-      html += '<div class="wallet-card"><span class="name">' + w.name + '</span><span class="balance">' + fmt(w.balance) + '</span></div>';
+  function fetchCellValue(sheet, cell) {
+    return API.post("/getCellValue", {
+      sheet,
+      cell,
+    }).then((data) => {
+      return data.value || 0;
     });
-    html += '</div>';
-
-    content.innerHTML = html;
-
-    var synced = new Date(data.lastSynced);
-    document.getElementById('dashSyncNote').textContent = 'Synced ' + synced.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
-  function load(force) {
-    if (loading) return;
-    if (!force && !stale) return;
+  function renderDashboard(cash, total, overShort) {
+    const content = document.getElementById("dashboardContent");
+    if (!content) return;
 
-    loading = true;
-    document.getElementById('dashboardContent').innerHTML = '<div class="dashboard-skeleton">Loading balances…</div>';
+    const isOver = overShort >= 0;
+    const overShortLabel = isOver ? "Over" : "Short";
+    const overShortAmount = Math.abs(overShort);
+    const overShortColor = isOver ? "var(--success)" : "var(--error)";
 
-    Api.dashboard(Auth.getToken()).then(function (res) {
-      loading = false;
-      if (!res.ok) {
-        document.getElementById('dashboardContent').innerHTML =
-          '<div class="dashboard-empty">' + (res.error || 'Could not load the dashboard.') + '</div>';
-        return;
-      }
-      stale = false;
-      render(res.data);
-    }).catch(function () {
-      loading = false;
-      document.getElementById('dashboardContent').innerHTML =
-        '<div class="dashboard-empty">Network error — pull to refresh once you\'re back online.</div>';
+    content.innerHTML = `
+      <div class="dashboard-grid">
+        <div class="dashboard-card">
+          <div class="card-label">Cash</div>
+          <div class="card-value">₱${formatCurrency(cash)}</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-label">Total</div>
+          <div class="card-value">₱${formatCurrency(total)}</div>
+        </div>
+
+        <div class="dashboard-card highlight" style="border-left: 4px solid ${overShortColor};">
+          <div class="card-label">${overShortLabel}</div>
+          <div class="card-value" style="color: ${overShortColor};">
+            ${isOver ? "+" : "−"}₱${formatCurrency(overShortAmount)}
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-summary">
+        <p>
+          <strong>Summary:</strong> You have ₱${formatCurrency(cash)} in cash, 
+          total budget is ₱${formatCurrency(total)}, 
+          and you're ${overShortLabel.toLowerCase()} by ₱${formatCurrency(overShortAmount)}.
+        </p>
+      </div>
+    `;
+  }
+
+  function formatCurrency(value) {
+    if (!value && value !== 0) return "0.00";
+    return parseFloat(value).toLocaleString("en-PH", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     });
   }
 
-  function invalidate() { stale = true; }
-
-  function init() {
-    document.getElementById('refreshBtn').addEventListener('click', function () { load(true); });
+  function updateSyncNote(note) {
+    const syncNote = document.getElementById("dashSyncNote");
+    if (syncNote) syncNote.textContent = note;
   }
 
-  return { init: init, load: load, invalidate: invalidate };
+  return {
+    init: initDashboard,
+  };
 })();
+
+// Initialize on page load
+document.addEventListener("DOMContentLoaded", () => {
+  DASHBOARD.init();
+});
