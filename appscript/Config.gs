@@ -28,6 +28,8 @@ var WALLET_SHEETS = ['Cash', 'GCash', 'BDOEqual', 'PNBReg', 'BPI', 'GoTyme', 'At
 var CATEGORY_SHEET = 'Sum';
 var CATEGORY_RANGE = 'C3:C';
 
-// Dashboard sheet + the cell holding the "OVER" variance value.
-var DASHBOARD_SHEET = 'Form'; // adjust if OVER lives on a different tab
-var OVER_CELL = 'F13';
+// Dashboard values shown by the mobile app.
+var DASHBOARD_SHEET = 'Form';
+var DASHBOARD_CASH_CELL = 'H11';
+var DASHBOARD_TOTAL_CELL = 'H19';
+var DASHBOARD_OVER_SHORT_CELL = 'H13';

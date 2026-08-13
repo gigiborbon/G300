@@ -26,28 +26,26 @@ function getWalletBalance(ss, sheetName) {
 }
 
 /**
- * Builds the full dashboard payload: every wallet balance + the OVER tile.
+ * Builds the dashboard payload from the summary cells on the Form sheet.
  */
 function buildDashboardData() {
   var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var dashSheet = ss.getSheetByName(DASHBOARD_SHEET);
+  if (!dashSheet) throw new Error("Dashboard sheet '" + DASHBOARD_SHEET + "' not found.");
 
-  var wallets = WALLET_SHEETS.map(function (name) {
-    return { name: name, balance: getWalletBalance(ss, name) };
+  var values = dashSheet.getRangeList([
+    DASHBOARD_CASH_CELL,
+    DASHBOARD_TOTAL_CELL,
+    DASHBOARD_OVER_SHORT_CELL
+  ]).getRanges().map(function (range) {
+    var value = Number(range.getValue());
+    return isNaN(value) ? 0 : value;
   });
 
-  var over = null;
-  try {
-    var dashSheet = ss.getSheetByName(DASHBOARD_SHEET);
-    if (dashSheet) {
-      over = Number(dashSheet.getRange(OVER_CELL).getValue());
-    }
-  } catch (err) {
-    over = null;
-  }
-
   return {
-    wallets: wallets,
-    over: over,
+    cash: values[0],
+    total: values[1],
+    overShort: values[2],
     lastSynced: new Date().toISOString()
   };
 }
