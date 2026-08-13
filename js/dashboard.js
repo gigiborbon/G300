@@ -1,28 +1,41 @@
-const DASHBOARD = (() => {
+var DASHBOARD = (function () {
 
   function initDashboard() {
-    const dashboardBtn = document.querySelector('[data-view="dashboard"]');
-    const refreshBtn = document.getElementById("refreshBtn");
+    var dashboardBtn = document.querySelector('[data-view="dashboard"]');
+    var refreshBtn = document.getElementById("refreshBtn");
 
     if (dashboardBtn) {
-      dashboardBtn.addEventListener("click", loadDashboard);
+      dashboardBtn.addEventListener("click", function () {
+        loadDashboard();
+      });
     }
 
     if (refreshBtn) {
-      refreshBtn.addEventListener("click", loadDashboard);
+      refreshBtn.addEventListener("click", function () {
+        loadDashboard();
+      });
     }
   }
 
   function loadDashboard() {
-    const content = document.getElementById("dashboardContent");
+    var content = document.getElementById("dashboardContent");
 
     if (content) {
       content.innerHTML =
         "<div class='dashboard-skeleton'>Loading balances…</div>";
     }
 
-    API.get("/dashboard")
-      .then((data) => {
+    var sessionToken = Auth.getToken();
+
+    Api.dashboard(sessionToken)
+      .then(function (result) {
+
+        if (!result.ok) {
+          throw new Error(result.error || "Unable to load dashboard.");
+        }
+
+        var data = result.data || {};
+
         renderDashboard(
           Number(data.cash || 0),
           Number(data.total || 0),
@@ -31,12 +44,14 @@ const DASHBOARD = (() => {
 
         updateSyncNote("Just now");
       })
-      .catch((err) => {
+      .catch(function (err) {
+
         if (content) {
-          content.innerHTML = `
-            <div class="error-card">
-              Failed to load dashboard: ${err.message}
-            </div>`;
+          content.innerHTML =
+            "<div class='error-card'>" +
+            "Failed to load dashboard: " +
+            escapeHtml(err.message) +
+            "</div>";
         }
 
         updateSyncNote("Error");
@@ -44,69 +59,117 @@ const DASHBOARD = (() => {
   }
 
   function renderDashboard(cash, total, overShort) {
-    const content = document.getElementById("dashboardContent");
+
+    var content = document.getElementById("dashboardContent");
+
     if (!content) return;
 
-    const isOver = overShort >= 0;
-    const label = isOver ? "Over" : "Short";
-    const amount = Math.abs(overShort);
-    const color = isOver ? "var(--success)" : "var(--error)";
+    var isOver = overShort >= 0;
 
-    content.innerHTML = `
-      <div class="dashboard-grid">
+    var label = isOver ? "Over" : "Short";
 
-        <div class="dashboard-card">
-          <div class="card-label">Cash</div>
-          <div class="card-value">₱${formatCurrency(cash)}</div>
-        </div>
+    var amount = Math.abs(overShort);
 
-        <div class="dashboard-card">
-          <div class="card-label">Total</div>
-          <div class="card-value">₱${formatCurrency(total)}</div>
-        </div>
+    var color = isOver
+      ? "var(--success)"
+      : "var(--error)";
 
-        <div class="dashboard-card highlight" style="border-left:4px solid ${color};">
-          <div class="card-label">${label}</div>
-          <div class="card-value" style="color:${color};">
-            ${isOver ? "+" : "−"}₱${formatCurrency(amount)}
-          </div>
-        </div>
+    content.innerHTML =
 
-      </div>
+      "<div class='dashboard-grid'>" +
 
-      <div class="dashboard-summary">
-        <p>
-          <strong>Summary:</strong><br>
-          Cash: <strong>₱${formatCurrency(cash)}</strong><br>
-          Total: <strong>₱${formatCurrency(total)}</strong><br>
-          ${label}: <strong style="color:${color};">
-          ${isOver ? "+" : "−"}₱${formatCurrency(amount)}
-          </strong>
-        </p>
-      </div>
-    `;
+        "<div class='dashboard-card'>" +
+          "<div class='card-label'>Cash</div>" +
+          "<div class='card-value'>₱" +
+            formatCurrency(cash) +
+          "</div>" +
+        "</div>" +
+
+        "<div class='dashboard-card'>" +
+          "<div class='card-label'>Total</div>" +
+          "<div class='card-value'>₱" +
+            formatCurrency(total) +
+          "</div>" +
+        "</div>" +
+
+        "<div class='dashboard-card highlight' " +
+          "style='border-left:4px solid " + color + ";'>" +
+
+          "<div class='card-label'>" +
+            label +
+          "</div>" +
+
+          "<div class='card-value' " +
+            "style='color:" + color + ";'>" +
+
+            (isOver ? "+" : "−") +
+            "₱" +
+            formatCurrency(amount) +
+
+          "</div>" +
+
+        "</div>" +
+
+      "</div>" +
+
+      "<div class='dashboard-summary'>" +
+        "<p>" +
+          "<strong>Summary:</strong> " +
+
+          "You have ₱" +
+          formatCurrency(cash) +
+          " in cash, " +
+
+          "total is ₱" +
+          formatCurrency(total) +
+          ", " +
+
+          "and you're " +
+          label.toLowerCase() +
+          " by ₱" +
+          formatCurrency(amount) +
+          "." +
+
+        "</p>" +
+      "</div>";
   }
 
   function formatCurrency(value) {
+
     return Number(value).toLocaleString("en-PH", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
+
   }
 
   function updateSyncNote(note) {
-    const syncNote = document.getElementById("dashSyncNote");
+
+    var syncNote = document.getElementById("dashSyncNote");
+
     if (syncNote) {
       syncNote.textContent = note;
     }
+
+  }
+
+  function escapeHtml(value) {
+
+    var div = document.createElement("div");
+
+    div.textContent = value;
+
+    return div.innerHTML;
+
   }
 
   return {
     init: initDashboard,
-    load: loadDashboard,
+    load: loadDashboard
   };
+
 })();
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
   DASHBOARD.init();
 });
