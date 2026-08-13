@@ -1,5 +1,5 @@
 // ============================================================================
-// DASHBOARD - read Cash, Total, and Over/Short values from the Form sheet.
+// DASHBOARD - read the balance summary and breakdown from the Form sheet.
 // ============================================================================
 
 var Dashboard = (function () {
@@ -33,6 +33,14 @@ var Dashboard = (function () {
     var color = isOver ? 'var(--success)' : 'var(--error)';
     var sign = isOver ? '+' : '\u2212';
     var amount = Math.abs(overShort);
+    var breakdown = Array.isArray(data.breakdown) ? data.breakdown : [];
+
+    var breakdownHtml = breakdown.map(function (item) {
+      return '<div class="dashboard-card">' +
+        '<div class="card-label">' + escapeHtml(item.name) + '</div>' +
+        '<div class="card-value">\u20b1' + formatCurrency(item.balance) + '</div>' +
+      '</div>';
+    }).join('');
 
     content.innerHTML =
       '<div class="dashboard-grid">' +
@@ -40,6 +48,7 @@ var Dashboard = (function () {
           '<div class="card-label">Cash</div>' +
           '<div class="card-value">\u20b1' + formatCurrency(cash) + '</div>' +
         '</div>' +
+        breakdownHtml +
         '<div class="dashboard-card">' +
           '<div class="card-label">Total</div>' +
           '<div class="card-value">\u20b1' + formatCurrency(total) + '</div>' +
@@ -65,6 +74,12 @@ var Dashboard = (function () {
         minute: '2-digit'
       });
     }
+  }
+
+  function escapeHtml(value) {
+    var div = document.createElement('div');
+    div.textContent = String(value || '');
+    return div.innerHTML;
   }
 
   function load(force) {

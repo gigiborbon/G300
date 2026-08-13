@@ -33,19 +33,26 @@ function buildDashboardData() {
   var dashSheet = ss.getSheetByName(DASHBOARD_SHEET);
   if (!dashSheet) throw new Error("Dashboard sheet '" + DASHBOARD_SHEET + "' not found.");
 
-  var values = dashSheet.getRangeList([
+  var cells = [
     DASHBOARD_CASH_CELL,
     DASHBOARD_TOTAL_CELL,
     DASHBOARD_OVER_SHORT_CELL
-  ]).getRanges().map(function (range) {
+  ].concat(DASHBOARD_BREAKDOWN.map(function (item) { return item.cell; }));
+
+  var values = dashSheet.getRangeList(cells).getRanges().map(function (range) {
     var value = Number(range.getValue());
     return isNaN(value) ? 0 : value;
+  });
+
+  var breakdown = DASHBOARD_BREAKDOWN.map(function (item, index) {
+    return { name: item.name, balance: values[index + 3] };
   });
 
   return {
     cash: values[0],
     total: values[1],
     overShort: values[2],
+    breakdown: breakdown,
     lastSynced: new Date().toISOString()
   };
 }

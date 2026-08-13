@@ -33,3 +33,10 @@ var DASHBOARD_SHEET = 'Form';
 var DASHBOARD_CASH_CELL = 'H11';
 var DASHBOARD_TOTAL_CELL = 'H19';
 var DASHBOARD_OVER_SHORT_CELL = 'H13';
+var DASHBOARD_BREAKDOWN = [
+  { name: 'GCash', cell: 'H14' },
+  { name: 'PNBReg', cell: 'H15' },
+  { name: 'GoTyme', cell: 'H16' },
+  { name: 'BDO Equal', cell: 'H17' },
+  { name: 'Atome', cell: 'H18' }
+];
