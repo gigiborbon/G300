@@ -22,6 +22,7 @@ function jsonOut(obj) {
  * GET endpoints — read-only.
  *   ?action=ping                      -> health check, no auth
  *   ?action=dashboard&sessionToken=...  -> wallet balances + OVER
+ *   ?action=cashCount&sessionToken=...  -> Form!F2:H11 cash-count values
  *   ?action=categories&sessionToken=... -> category dropdown list
  */
 function doGet(e) {
@@ -42,6 +43,14 @@ function doGet(e) {
       return jsonOut({ ok: true, data: data });
     } catch (err) {
       return jsonOut({ ok: false, error: 'Could not load dashboard: ' + err.message });
+    }
+  }
+
+  if (action === 'cashCount') {
+    try {
+      return jsonOut({ ok: true, data: getCashCountData() });
+    } catch (err) {
+      return jsonOut({ ok: false, error: 'Could not load cash count: ' + err.message });
     }
   }
 
@@ -92,13 +101,21 @@ function doPost(e) {
     return jsonOut({ ok: true });
   }
 
-  if (body.action !== 'addRecord') {
-    return jsonOut({ ok: false, error: 'Unknown action.' });
-  }
-
   var auth = verifyPersistentSession(body.sessionToken);
   if (!auth.ok) {
     return jsonOut({ ok: false, error: auth.error });
+  }
+
+  if (body.action === 'updateCashCount') {
+    try {
+      return jsonOut({ ok: true, data: updateCashCount(body.values) });
+    } catch (err) {
+      return jsonOut({ ok: false, error: 'Could not save cash count: ' + err.message });
+    }
+  }
+
+  if (body.action !== 'addRecord') {
+    return jsonOut({ ok: false, error: 'Unknown action.' });
   }
 
   var wallet = String(body.wallet || '').trim();

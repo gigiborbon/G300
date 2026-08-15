@@ -1,0 +1,90 @@
+.cash-count-table {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cash-count-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) minmax(90px, 0.8fr) minmax(105px, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.cash-count-row.is-header {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.cash-count-label {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.cash-count-input {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  text-align: right;
+}
+
+.cash-count-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(96, 96, 96, 0.15);
+}
+
+.cash-count-amount {
+  color: var(--text-light);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.cash-count-total {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  text-align: right;
+}
+
+.cash-count-total span {
+  display: block;
+  color: var(--text-light);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.cash-count-total strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--text);
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 380px) {
+  .cash-count-row {
+    grid-template-columns: minmax(72px, 1fr) minmax(70px, 0.8fr) minmax(90px, 1fr);
+    gap: 6px;
+    padding: 8px 6px;
+    font-size: 14px;
+  }
+}

@@ -4,7 +4,7 @@
 // always be fresh.
 // ============================================================================
 
-var CACHE_NAME = 'g-shell-v9';
+var CACHE_NAME = 'g-shell-v10';
 var SHELL_FILES = [
   './',
   './index.html',
@@ -13,11 +13,13 @@ var SHELL_FILES = [
   './css/styles.css',
   './css/form.css',
   './css/dashboard.css',
+  './css/cash-count.css',
   './js/config.js',
   './js/api.js',
   './js/auth.js',
   './js/form.js',
   './js/dashboard.js',
+  './js/cash-count.js',
   './js/app.js',
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',

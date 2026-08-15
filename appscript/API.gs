@@ -58,6 +58,57 @@ function buildDashboardData() {
 }
 
 /**
+ * Returns Form!F2:H11 for the mobile cash-count tab.
+ */
+function getCashCountData(existingSpreadsheet) {
+  var ss = existingSpreadsheet || SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName(CASH_COUNT_SHEET);
+  if (!sheet) throw new Error("Cash-count sheet '" + CASH_COUNT_SHEET + "' not found.");
+
+  var range = sheet.getRange(CASH_COUNT_RANGE);
+  var raw = range.getValues();
+  var displayed = range.getDisplayValues();
+
+  return {
+    rows: raw.map(function (row, index) {
+      return {
+        label: displayed[index][0],
+        input: row[1] === '' ? '' : Number(row[1]),
+        amount: row[2] === '' ? null : Number(row[2])
+      };
+    }),
+    total: raw[raw.length - 1][2] === '' ? null : Number(raw[raw.length - 1][2]),
+    lastSynced: new Date().toISOString()
+  };
+}
+
+/**
+ * Writes the ten mobile inputs to Form!G2:G11 and returns recalculated values.
+ */
+function updateCashCount(values) {
+  if (!Array.isArray(values) || values.length !== 10) {
+    throw new Error('Exactly 10 cash-count values are required.');
+  }
+
+  var rows = values.map(function (value) {
+    if (value === '' || value === null || typeof value === 'undefined') return [''];
+    var number = Number(value);
+    if (isNaN(number) || !isFinite(number) || number < 0) {
+      throw new Error('Cash-count values must be blank or non-negative numbers.');
+    }
+    return [number];
+  });
+
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName(CASH_COUNT_SHEET);
+  if (!sheet) throw new Error("Cash-count sheet '" + CASH_COUNT_SHEET + "' not found.");
+
+  sheet.getRange(CASH_COUNT_INPUT_RANGE).setValues(rows);
+  SpreadsheetApp.flush();
+  return getCashCountData(ss);
+}
+
+/**
  * Returns the category dropdown list from Sum!C3:C, skipping blanks.
  */
 function getCategoryList() {

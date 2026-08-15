@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/form.css">
 <link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/cash-count.css">
 </head>
 <body>
 
@@ -110,6 +111,20 @@
     </div>
   </section>
 
+  <!-- ---------------- Cash Count ---------------- -->
+  <section class="view" id="view-cash-count" aria-labelledby="cash-count-heading">
+    <div class="view-header">
+      <h1 id="cash-count-heading">Cash count</h1>
+      <span class="sync-note" id="cashCountSyncNote">â€”</span>
+    </div>
+    <div class="refresh-row">
+      <button class="btn-text" id="cashCountRefreshBtn">â†» Refresh</button>
+    </div>
+    <div id="cashCountContent">
+      <div class="dashboard-skeleton">Loading cash countâ€¦</div>
+    </div>
+  </section>
+
   <!-- ---------------- Settings ---------------- -->
   <section class="view" id="view-settings" aria-labelledby="settings-heading">
     <div class="view-header">
@@ -136,6 +151,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
       Dashboard
     </button>
+    <button class="nav-btn" data-view="cash-count">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2M15 10v4M13 12h4"/></svg>
+      Cash count
+    </button>
     <button class="nav-btn" data-view="settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg>
       Settings
@@ -151,6 +170,7 @@
 <script src="js/auth.js"></script>
 <script src="js/form.js"></script>
 <script src="js/dashboard.js"></script>
+<script src="js/cash-count.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

@@ -26,6 +26,10 @@ var Api = (function () {
     verifySession: function (sessionToken) { return post({ action: 'verifySession', sessionToken: sessionToken }); },
     signOut: function (sessionToken) { return post({ action: 'signOut', sessionToken: sessionToken }); },
     dashboard: function (sessionToken) { return get('dashboard', sessionToken); },
+    cashCount: function (sessionToken) { return get('cashCount', sessionToken); },
+    updateCashCount: function (sessionToken, values) {
+      return post({ action: 'updateCashCount', sessionToken: sessionToken, values: values });
+    },
     categories: function (sessionToken) { return get('categories', sessionToken); },
     addRecord: function (sessionToken, record) {
       var body = Object.assign({ action: 'addRecord', sessionToken: sessionToken }, record);

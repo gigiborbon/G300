@@ -26,6 +26,7 @@ function showView(name) {
   });
 
   if (name === 'dashboard') Dashboard.load(false);
+  if (name === 'cash-count') CashCount.load(false);
 }
 
 function initNav() {
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initTheme();
   RecordForm.init();
   Dashboard.init();
+  CashCount.init();
 });
 
 if ('serviceWorker' in navigator) {

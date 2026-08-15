@@ -40,3 +40,8 @@ var DASHBOARD_BREAKDOWN = [
   { name: 'BDO Equal', cell: 'H17' },
   { name: 'Atome', cell: 'H18' }
 ];
+
+// Mobile cash-count editor. Labels/formulas stay in F and H; only G is written.
+var CASH_COUNT_SHEET = 'Form';
+var CASH_COUNT_RANGE = 'F2:H11';
+var CASH_COUNT_INPUT_RANGE = 'G2:G11';
