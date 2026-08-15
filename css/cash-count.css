@@ -80,6 +80,15 @@
   font-variant-numeric: tabular-nums;
 }
 
+.cash-count-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.cash-count-actions .btn-secondary {
+  width: 100%;
+}
+
 @media (max-width: 380px) {
   .cash-count-row {
     grid-template-columns: minmax(72px, 1fr) minmax(70px, 0.8fr) minmax(90px, 1fr);

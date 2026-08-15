@@ -49,10 +49,14 @@ var CashCount = (function () {
           rowsHtml +
         '</div>' +
         '<div class="cash-count-total"><span>Total</span><strong>' + formatCurrency(data.total) + '</strong></div>' +
-        '<button type="submit" class="btn-primary" id="cashCountSaveBtn">Save cash count</button>' +
+        '<div class="cash-count-actions">' +
+          '<button type="submit" class="btn-primary" id="cashCountSaveBtn">Save cash count</button>' +
+          '<button type="button" class="btn-secondary" id="cashCountClearBtn">Clear entries</button>' +
+        '</div>' +
       '</form>';
 
     document.getElementById('cashCountForm').addEventListener('submit', save);
+    document.getElementById('cashCountClearBtn').addEventListener('click', clearEntries);
     updateSyncNote(data.lastSynced);
   }
 
@@ -121,6 +125,29 @@ var CashCount = (function () {
     }).catch(function (error) {
       button.disabled = false;
       button.textContent = 'Save cash count';
+      Toast.show(error.message, true);
+    });
+  }
+
+  function clearEntries() {
+    if (!window.confirm('Clear all cash-count entries?')) return;
+
+    var saveButton = document.getElementById('cashCountSaveBtn');
+    var clearButton = document.getElementById('cashCountClearBtn');
+    saveButton.disabled = true;
+    clearButton.disabled = true;
+    clearButton.textContent = 'Clearing\u2026';
+
+    Api.updateCashCount(Auth.getToken(), ['', '', '', '', '', '', '', '', '']).then(function (result) {
+      if (!result.ok) throw new Error(result.error || 'Unable to clear cash count.');
+      stale = false;
+      render(result.data || {});
+      Dashboard.invalidate();
+      Toast.show('Cash count cleared');
+    }).catch(function (error) {
+      saveButton.disabled = false;
+      clearButton.disabled = false;
+      clearButton.textContent = 'Clear entries';
       Toast.show(error.message, true);
     });
   }
