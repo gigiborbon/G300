@@ -41,7 +41,7 @@ var DASHBOARD_BREAKDOWN = [
   { name: 'Atome', cell: 'H18' }
 ];
 
-// Mobile cash-count editor. Labels/formulas stay in F and H; only G is written.
+// Mobile cash-count editor. Row 11 is the calculated total and is read-only.
 var CASH_COUNT_SHEET = 'Form';
 var CASH_COUNT_RANGE = 'F2:H11';
-var CASH_COUNT_INPUT_RANGE = 'G2:G11';
+var CASH_COUNT_INPUT_RANGE = 'G2:G10';

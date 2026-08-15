@@ -70,7 +70,7 @@ function getCashCountData(existingSpreadsheet) {
   var displayed = range.getDisplayValues();
 
   return {
-    rows: raw.map(function (row, index) {
+    rows: raw.slice(0, -1).map(function (row, index) {
       return {
         label: displayed[index][0],
         input: row[1] === '' ? '' : Number(row[1]),
@@ -83,11 +83,11 @@ function getCashCountData(existingSpreadsheet) {
 }
 
 /**
- * Writes the ten mobile inputs to Form!G2:G11 and returns recalculated values.
+ * Writes the nine denomination inputs to Form!G2:G10 and returns the total.
  */
 function updateCashCount(values) {
-  if (!Array.isArray(values) || values.length !== 10) {
-    throw new Error('Exactly 10 cash-count values are required.');
+  if (!Array.isArray(values) || values.length !== 9) {
+    throw new Error('Exactly 9 cash-count values are required.');
   }
 
   var rows = values.map(function (value) {

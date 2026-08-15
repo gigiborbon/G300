@@ -1,5 +1,5 @@
 // ============================================================================
-// CASH COUNT - edit Form!G2:G11 and display the calculated Form!H2:H11.
+// CASH COUNT - edit Form!G2:G10 and display the calculated total from H11.
 // ============================================================================
 
 var CashCount = (function () {
