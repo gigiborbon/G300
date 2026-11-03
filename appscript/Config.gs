@@ -22,7 +22,7 @@ var AUTHORIZED_EMAILS = [
 
 // Wallet tabs the mobile app is allowed to write to.
 // Must match actual sheet tab names exactly.
-var WALLET_SHEETS = ['Cash', 'GCash', 'BDOEqual', 'PNBReg', 'BPI', 'GoTyme', 'Atome'];
+var WALLET_SHEETS = ['CASH', 'GCASH-E', 'PNBReg', 'GoTyme', 'BDOEqual', 'BPI', 'GCASH-G'];
 
 // Where the category dropdown list lives.
 var CATEGORY_SHEET = 'Sum';
@@ -30,18 +30,20 @@ var CATEGORY_RANGE = 'C3:C';
 
 // Dashboard values shown by the mobile app.
 var DASHBOARD_SHEET = 'Form';
-var DASHBOARD_CASH_CELL = 'H11';
-var DASHBOARD_TOTAL_CELL = 'H19';
 var DASHBOARD_OVER_SHORT_CELL = 'H13';
-var DASHBOARD_BREAKDOWN = [
-  { name: 'GCash', cell: 'H14' },
-  { name: 'PNBReg', cell: 'H15' },
-  { name: 'GoTyme', cell: 'H16' },
-  { name: 'BDO Equal', cell: 'H17' },
-  { name: 'Atome', cell: 'H18' }
+
+// The dashboard reads these live wallet tabs directly. Keep GCASH-E and GCASH-G separate.
+var BANK_ACCOUNTS = [
+  { name: 'GCASH', sheet: 'GCASH-E' },
+  { name: 'PNBREG', sheet: 'PNBReg' },
+  { name: 'GOTYME', sheet: 'GoTyme' },
+  { name: 'BDO EQUAL', sheet: 'BDOEqual' },
+  { name: 'BPI', sheet: 'BPI' },
+  { name: 'GCASH-G', sheet: 'GCASH-G' }
 ];
 
 // Mobile cash-count editor. Row 11 is the calculated total and is read-only.
 var CASH_COUNT_SHEET = 'Form';
 var CASH_COUNT_RANGE = 'F2:H11';
 var CASH_COUNT_INPUT_RANGE = 'G2:G10';
+

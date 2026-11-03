@@ -4,7 +4,7 @@
 // always be fresh.
 // ============================================================================
 
-var CACHE_NAME = 'g-shell-v12';
+var CACHE_NAME = 'g-shell-v13';
 var SHELL_FILES = [
   './',
   './index.html',
@@ -68,3 +68,4 @@ self.addEventListener('fetch', function (event) {
     })
   );
 });
+

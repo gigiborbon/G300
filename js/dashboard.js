@@ -21,10 +21,12 @@ var Dashboard = (function () {
     if (!content) return;
 
     var cash = Number(data.cash);
+    var bankTotal = Number(data.bankTotal);
     var total = Number(data.total);
     var overShort = Number(data.overShort);
 
     if (!isFinite(cash)) cash = 0;
+    if (!isFinite(bankTotal)) bankTotal = 0;
     if (!isFinite(total)) total = 0;
     if (!isFinite(overShort)) overShort = 0;
 
@@ -50,7 +52,11 @@ var Dashboard = (function () {
         '</div>' +
         breakdownHtml +
         '<div class="dashboard-card">' +
-          '<div class="card-label">Total</div>' +
+          '<div class="card-label">Total Bank Balance</div>' +
+          '<div class="card-value">\u20b1' + formatCurrency(bankTotal) + '</div>' +
+        '</div>' +
+        '<div class="dashboard-card">' +
+          '<div class="card-label">Total Wallet Balance</div>' +
           '<div class="card-value">\u20b1' + formatCurrency(total) + '</div>' +
         '</div>' +
         '<div class="dashboard-card highlight" style="border-left:4px solid ' + color + ';">' +
@@ -62,8 +68,9 @@ var Dashboard = (function () {
       '</div>' +
       '<div class="dashboard-summary">' +
         '<p><strong>Summary:</strong> Cash is \u20b1' + formatCurrency(cash) +
-        ', total is \u20b1' + formatCurrency(total) +
-        ', and you are ' + label.toLowerCase() + ' by \u20b1' + formatCurrency(amount) + '.</p>' +
+        ', bank accounts total \u20b1' + formatCurrency(bankTotal) +
+        ', all wallets total \u20b1' + formatCurrency(total) +
+        ', and cash is ' + label.toLowerCase() + ' by \u20b1' + formatCurrency(amount) + '.</p>' +
       '</div>';
 
     var synced = data.lastSynced ? new Date(data.lastSynced) : new Date();
@@ -125,3 +132,4 @@ var Dashboard = (function () {
 
   return { init: init, load: load, invalidate: invalidate };
 })();
+

@@ -9,16 +9,16 @@ var RecordForm = (function () {
   function renderWalletChips() {
     var container = document.getElementById('walletChips');
     container.innerHTML = '';
-    APP_CONFIG.WALLETS.forEach(function (name, i) {
+    APP_CONFIG.WALLETS.forEach(function (wallet, i) {
       var chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'wallet-chip' + (i === 0 ? ' is-selected' : '');
-      chip.textContent = name;
-      chip.dataset.wallet = name;
-      chip.addEventListener('click', function () { selectWallet(name); });
+      chip.textContent = wallet.label;
+      chip.dataset.wallet = wallet.sheet;
+      chip.addEventListener('click', function () { selectWallet(wallet.sheet); });
       container.appendChild(chip);
     });
-    if (APP_CONFIG.WALLETS.length) state.wallet = APP_CONFIG.WALLETS[0];
+    if (APP_CONFIG.WALLETS.length) state.wallet = APP_CONFIG.WALLETS[0].sheet;
   }
 
   function selectWallet(name) {
@@ -66,7 +66,7 @@ var RecordForm = (function () {
   function resetAfterSubmit() {
     // Mirrors clearForm() behavior on the sheet: wallet + amount reset,
     // category/particulars/notes/date are left as-is for quick repeat entries.
-    if (APP_CONFIG.WALLETS.length) selectWallet(APP_CONFIG.WALLETS[0]);
+    if (APP_CONFIG.WALLETS.length) selectWallet(APP_CONFIG.WALLETS[0].sheet);
     document.getElementById('amountInput').value = '';
     selectType('expense');
     document.getElementById('amountInput').focus();
@@ -115,7 +115,8 @@ var RecordForm = (function () {
         Toast.show(res.error || 'Could not save entry', true);
         return;
       }
-      Toast.show('Saved to ' + record.wallet);
+      var walletOption = APP_CONFIG.WALLETS.find(function (item) { return item.sheet === record.wallet; });
+      Toast.show('Saved to ' + (walletOption ? walletOption.label : record.wallet));
       resetAfterSubmit();
       Dashboard.invalidate(); // next Dashboard visit refetches fresh balances
     }).catch(function () {
@@ -157,3 +158,4 @@ var RecordForm = (function () {
 
   return { init: init, loadCategories: loadCategories };
 })();
+
